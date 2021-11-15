@@ -31,7 +31,7 @@ public class MontyHallApplicationTests {
         MontyHallResponse response = testService.startSimulation(request);
 
         Assert.assertEquals(request.getNumberOfAttempts().longValue(), response.getSuccessfulAttempts() + response.getUnSuccessfulAttempts());
-        Assert.assertNotNull(response.getSuccessRate());
+        Assert.assertTrue(response.getSuccessRate() > 0.0);
         Assert.assertEquals(response.isChangedDoor(), request.isChangeDoor());
     }
 

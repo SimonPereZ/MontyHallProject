@@ -19,11 +19,11 @@ public class MontyHallManager {
     }
 
     public MontyHallResponse runSimulation(SimulationRequest request) {
-        Long successfulAttempts = 0L;
-        Long unSuccessfulAttempts = 0L;
-        Long attempts = 0L;
+        long successfulAttempts = 0L;
+        long unSuccessfulAttempts = 0L;
+        long attempts = 0L;
 
-        while (attempts.compareTo(request.getNumberOfAttempts()) < 0) {
+        while (attempts < request.getNumberOfAttempts()) {
             if (isGameSuccessful(request.isChangeDoor())) {
                 successfulAttempts++;
 
@@ -32,7 +32,7 @@ public class MontyHallManager {
             }
             attempts++;
         }
-        double winRate = calculateWinRate(request, successfulAttempts);
+        double winRate = calculateWinRate(request.getNumberOfAttempts(), successfulAttempts);
 
         return new MontyHallResponse(request.getNumberOfAttempts(), successfulAttempts, unSuccessfulAttempts, winRate, request.isChangeDoor());
     }
@@ -48,8 +48,8 @@ public class MontyHallManager {
         return winArgumentOne || winArgumentTwo;
     }
 
-    private double calculateWinRate(SimulationRequest request, double successfulAttempts) {
-        BigDecimal winRate = new BigDecimal((successfulAttempts / request.getNumberOfAttempts()) * 100);
+    public double calculateWinRate(double numberOfAttempts, double successfulAttempts) {
+        BigDecimal winRate = new BigDecimal((successfulAttempts / numberOfAttempts) * 100);
         return winRate.setScale(1, RoundingMode.HALF_UP).doubleValue();
     }
 }
